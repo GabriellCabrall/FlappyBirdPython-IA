@@ -43,7 +43,7 @@ class Passaro():
     def mover(self):
         # calcular o deslocamento
         self.tempo += 1
-        deslocamento = 1.5 * (self.tempo**2) + self.velocidade * self.tempo
+        deslocamento = 1.5 * (self.tempo ** 2) + self.velocidade * self.tempo
 
         # restringir o deslocamento
         if deslocamento > 16:
@@ -67,27 +67,27 @@ class Passaro():
 
         if self.contagem_imagem < self.TEMPO_ANIMACAO:
             self.imagem = self.IMGS[0]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*2:
+        elif self.contagem_imagem < self.TEMPO_ANIMACAO * 2:
             self.imagem = self.IMGS[1]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*3:
+        elif self.contagem_imagem < self.TEMPO_ANIMACAO * 3:
             self.imagem = self.IMGS[2]
-        elif self.contagem_imagem < self.TEMPO_ANIMACAO*4:
+        elif self.contagem_imagem < self.TEMPO_ANIMACAO * 4:
             self.imagem = self.IMGS[1]
-        elif self.contagem_imagem >= self.TEMPO_ANIMACAO*4 + 1:
+        elif self.contagem_imagem >= self.TEMPO_ANIMACAO * 4 + 1:
             self.imagem = self.IMGS[0]
             self.contagem_imagem = 0
 
         # se o pássaro tiver caindo, não bater asa
         if self.angulo <= -80:
             self.imagem = self.IMGS[1]
-            self.contagem_imagem = self.TEMPO_ANIMACAO*2
+            self.contagem_imagem = self.TEMPO_ANIMACAO * 2
 
         # desenhar a imagem
         imagem_rotacionada = pygame.transform.rotate(self.imagem, self.angulo)
         pos_centro_imagem = self.imagem.get_rect(topleft=(self.x, self.y)).center
         retangulo = imagem_rotacionada.get_rect(center=pos_centro_imagem)
         tela.blit(imagem_rotacionada, retangulo.topleft)
-    
+
     def get_mask(self):
         pygame.mask.from_surface(self.imagem)
 
@@ -101,7 +101,7 @@ class Cano():
         self.altura = 0
         self.pos_topo = 0
         self.pos_base = 0
-        self.CANO_TOPO =pygame.transform.flip(IMAGEM_CANO, False, True)
+        self.CANO_TOPO = pygame.transform.flip(IMAGEM_CANO, False, True)
         self.CANO_BASE = IMAGEM_CANO
         self.passou = False
         self.definir_altura()
