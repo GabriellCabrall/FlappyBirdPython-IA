@@ -217,13 +217,31 @@ def main(genomas, config):
                 rodando = False
                 pygame.quit()
                 quit()
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_SPACE:
-                    for passaro in passaros:
-                        passaro.pular()
+            if not ai_jogando:
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_SPACE:
+                        for passaro in passaros:
+                            passaro.pular()
+
+        indice_cano = 0
+        if len(passaros) < 0:
+            if len(canos) > 1 and passaros[0].x > (canos[0] + canos[0].CANO_TOPO.get_width()):
+                indice_cano = 1
+        else:
+            rodando = False
+            break
+
         # movendo os itens
-        for passaro in passaros:
+        for i, passaro in enumerate(passaros):
             passaro.mover()
+            # aumentar o fitness
+            lista_genomas[i].fitness += 0.1
+            output = redes[i].activate((passaro.y, 
+                                        abs(passaro.y - canos[indice_cano].altura), 
+                                        abs(passaro.y - canos[indice_cano].pos_base)))
+            # se o output for maior que 0.5 o passaro deve pular
+            if output[0] > 0.5:
+                passaro.pular
         chao.mover()
 
         adicionar_cano = False
@@ -251,6 +269,9 @@ def main(genomas, config):
                 passaros.pop(i)
         
         desenhar_tela(tela, passaros, canos, chao, pontos)
+
+def rodar():
+    pass
 
 
 if __name__ == '__main__':
