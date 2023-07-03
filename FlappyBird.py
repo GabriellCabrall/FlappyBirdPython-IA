@@ -273,12 +273,30 @@ def main(genomas, config):
         for i, passaro in enumerate(passaros):
             if (passaro.y + passaro.imagem.get_height()) > chao.y or passaro.y < 0:
                 passaros.pop(i)
+                if ai_jogando:
+                    lista_genomas.pop(i)
+                    redes.pop(i)
         
         desenhar_tela(tela, passaros, canos, chao, pontos)
 
-def rodar():
-    pass
+def rodar(caminho_config):
+    config = neat.config.Config(neat.DefaultGenome,
+                                neat.DefaultReproduction,
+                                neat.DefaultSpeciesSet,
+                                neat.DefaultStagnation,
+                                caminho_config)
+    
+    populacao = neat.Population(config)
+    populacao.add_reporter(neat.StdOutReporter(True))
+    populacao.add_reporter(neat.StatisticsReporter())
+
+    if ai_jogando:
+        populacao.run(main, 50)
+    else:
+        main(None, None)
 
 
 if __name__ == '__main__':
-    main()
+    caminho = os.path.dirname(__file__)
+    caminho_config = os.path.join(caminho, 'config.txt')
+    rodar(caminho_config)
