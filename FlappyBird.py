@@ -250,6 +250,10 @@ def main(genomas, config):
             for i, passaro in enumerate(passaros):
                 if cano.colidir(passaro):
                     passaros.pop(i)
+                    if ai_jogando:
+                        lista_genomas[i].fitness -= 1
+                        lista_genomas.pop(i)
+                        redes.pop(i)
                 if not cano.passou and passaro.x > cano.x:
                     cano.passou = True
                     adicionar_cano = True
@@ -260,6 +264,8 @@ def main(genomas, config):
         if adicionar_cano:
             pontos += 1
             canos.append(Cano(600))
+            for genoma in lista_genomas:
+                genoma.fitness += 5
 
         for cano in remover_canos:
             canos.remove(cano)
