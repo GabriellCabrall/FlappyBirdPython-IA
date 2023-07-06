@@ -2,6 +2,7 @@ import pygame
 import os
 import random
 import neat
+import math
 
 ai_jogando = False
 geracao = 0
@@ -100,6 +101,8 @@ class Passaro:
 class Cano:
     DISTANCIA = 200
     VELOCIDADE = 5
+    DESLOCAMENTO_AMPLITUDE = 5
+    DESLOCAMENTO_FREQUENCIA = 0.01
 
     def __init__(self, x):
         self.x = x
@@ -110,6 +113,7 @@ class Cano:
         self.CANO_BASE = IMAGEM_CANO
         self.passou = False
         self.definir_altura()
+        self.deslocamento = 0
 
     def definir_altura(self):
         self.altura = random.randrange(50, 450)
@@ -118,6 +122,11 @@ class Cano:
 
     def mover(self):
         self.x -= self.VELOCIDADE
+        self.deslocamento = self.DESLOCAMENTO_AMPLITUDE * math.sin(self.x * self.DESLOCAMENTO_FREQUENCIA)
+        
+        self.altura += self.deslocamento
+        self.pos_topo = self.altura - self.CANO_TOPO.get_height()
+        self.pos_base = self.altura + self.DISTANCIA
 
     def desenhar(self, tela):
         tela.blit(self.CANO_TOPO, (self.x, self.pos_topo))
