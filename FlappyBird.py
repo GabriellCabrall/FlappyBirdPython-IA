@@ -4,7 +4,7 @@ import random
 import neat
 import math
 
-ai_jogando = False
+ai_jogando = True
 geracao = 0
 
 TELA_LARGURA = 500
@@ -101,7 +101,7 @@ class Passaro:
 class Cano:
     DISTANCIA = 200
     VELOCIDADE = 5
-    DESLOCAMENTO_AMPLITUDE = 5
+    DESLOCAMENTO_AMPLITUDE = 4.3
     DESLOCAMENTO_FREQUENCIA = 0.01
 
     def __init__(self, x):
