@@ -22,7 +22,7 @@ pygame.font.init()
 FONTE_PONTOS = pygame.font.SysFont('arial', 50)
 
 
-class Passaro():
+class Passaro:
     IMGS = IMAGENS_PASSARO
     # animações de rotação
     ROTACAO_MAXIMA = 25
@@ -47,7 +47,7 @@ class Passaro():
     def mover(self):
         # calcular o deslocamento
         self.tempo += 1
-        deslocamento = 1.5 * (self.tempo ** 2) + self.velocidade * self.tempo
+        deslocamento = 1.5 * (self.tempo**2) + self.velocidade * self.tempo
 
         # restringir o deslocamento
         if deslocamento > 16:
@@ -81,6 +81,7 @@ class Passaro():
             self.imagem = self.IMGS[0]
             self.contagem_imagem = 0
 
+
         # se o pássaro tiver caindo, não bater asa
         if self.angulo <= -80:
             self.imagem = self.IMGS[1]
@@ -96,11 +97,9 @@ class Passaro():
         return pygame.mask.from_surface(self.imagem)
 
 
-class Cano():
+class Cano:
     DISTANCIA = 200
     VELOCIDADE = 5
-    VELOCIDADE_VERTICAL = 5
-    AMPLITUDE_MOVIMENTO = TELA_ALTURA // 2
 
     def __init__(self, x):
         self.x = x
@@ -110,7 +109,6 @@ class Cano():
         self.CANO_TOPO = pygame.transform.flip(IMAGEM_CANO, False, True)
         self.CANO_BASE = IMAGEM_CANO
         self.passou = False
-        self.direcao = 1
         self.definir_altura()
 
     def definir_altura(self):
@@ -142,7 +140,7 @@ class Cano():
             return False
 
 
-class Chao():
+class Chao:
     VELOCIDADE = 5
     LARGURA = IMAGEM_CHAO.get_width()
     IMAGEM = IMAGEM_CHAO
@@ -200,9 +198,8 @@ def main(genomas, config):
             passaros.append(Passaro(230, 350))
     else:
         passaros = [Passaro(230, 350)]
-
     chao = Chao(730)
-    canos = [Cano(600)] 
+    canos = [Cano(700)] 
     tela = pygame.display.set_mode((TELA_LARGURA, TELA_ALTURA))
     pontos = 0
     relogio = pygame.time.Clock()
@@ -224,8 +221,8 @@ def main(genomas, config):
                             passaro.pular()
 
         indice_cano = 0
-        if len(passaros) < 0:
-            if len(canos) > 1 and passaros[0].x > (canos[0] + canos[0].CANO_TOPO.get_width()):
+        if len(passaros) > 0:
+            if len(canos) > 1 and passaros[0].x > (canos[0].x + canos[0].CANO_TOPO.get_width()):
                 indice_cano = 1
         else:
             rodando = False
@@ -241,7 +238,7 @@ def main(genomas, config):
                                         abs(passaro.y - canos[indice_cano].pos_base)))
             # se o output for maior que 0.5 o passaro deve pular
             if output[0] > 0.5:
-                passaro.pular
+                passaro.pular()
         chao.mover()
 
         adicionar_cano = False
@@ -266,7 +263,6 @@ def main(genomas, config):
             canos.append(Cano(600))
             for genoma in lista_genomas:
                 genoma.fitness += 5
-
         for cano in remover_canos:
             canos.remove(cano)
 
@@ -276,8 +272,9 @@ def main(genomas, config):
                 if ai_jogando:
                     lista_genomas.pop(i)
                     redes.pop(i)
-        
+
         desenhar_tela(tela, passaros, canos, chao, pontos)
+
 
 def rodar(caminho_config):
     config = neat.config.Config(neat.DefaultGenome,
